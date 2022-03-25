@@ -1,3 +1,4 @@
-const p = document.createElement("p");
-p.append("Hello");
-document.body.appendChild(p);
+import { App } from "./App"
+
+const app = App.create()
+app.run()
