@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D temps reel</title>
+    <style>
+        body {
+            overflow: hidden;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<iframe src="https://giphy.com/embed/MARFSIQQNQVWw" width="480" height="268" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/funimation-smile-my-hero-academia-MARFSIQQNQVWw"></a></p>
+<button onclick="f()">Le bouton</button>
+<canvas id="canvas" width="600px" height="400px"></canvas>
+<script>
+    const c = document.getElementById("canvas")
+    const ctx = c.getContext("2d")
+    let x = 0
+    let y = 0
+    let dx = 1
+    let dy = 1
+
+function f() {
+    ctx.clearRect(0, 0, c.width, c.height)
+    ctx.beginPath()
+    ctx.lineWidth = "2"
+    ctx.strokeStyle = "red"
+    ctx.rect(x, y, 10, 10)
+    ctx.stroke()
+    if (x + dx <= 0 || x + dx + 10 > c.width) {
+        dx = -dx
+    }
+    if (y + dy <= 0 || y + dy + 10 > c.height) {
+        dy = -dy
+    }
+
+    x += dx
+    y += dy
+
+    setTimeout(f, 0)
+    //while(true);
+    //const p = document.createElement('p')
+    //p.append(Date.now()+" - click");
+    // document.body.appendChild(p)
+
+}
+f()
+</script>
+</body>
+</html>
