@@ -9,6 +9,10 @@
             overflow: hidden;
             margin: 0;
         }
+
+        #canvas {
+            background-color: cornsilk;
+        }
     </style>
 </head>
 <body>
@@ -18,36 +22,46 @@
 <script>
     const c = document.getElementById("canvas")
     const ctx = c.getContext("2d")
-    let x = 0
-    let y = 0
-    let dx = 1
-    let dy = 1
+    const rectangles = [
+        {x:0, y:0, dx:1, dy:1, color: "red"},
+        {x:Math.round(c.width/2), y : Math.round(c.height/2), dx:1, dy:-1, color:"green"}
+    ]
+    const numRectangle = 0
+
+    function animeRectangle(numRectangle){
+        ctx.beginPath()
+        ctx.lineWidth = "2"
+        ctx.strokeStyle = rectangles[numRectangle].color
+        ctx.rect( rectangles[numRectangle].x,  rectangles[numRectangle].y, 10, 10)
+        ctx.stroke()
+        if ( rectangles[numRectangle].x +  rectangles[numRectangle].dx <= 0 ||  rectangles[numRectangle].x +  rectangles[numRectangle].dx + 10 > c.width) {
+            rectangles[numRectangle].dx =  -rectangles[numRectangle].dx
+        }
+        if ( rectangles[numRectangle].y +  rectangles[numRectangle].dy <= 0 ||  rectangles[numRectangle].y +  rectangles[numRectangle].dy + 10 > c.height) {
+            rectangles[numRectangle].dy = - rectangles[numRectangle].dy
+        }
+
+        rectangles[numRectangle].x +=  rectangles[numRectangle].dx
+        rectangles[numRectangle].y +=  rectangles[numRectangle].dy
+    }
 
 function f() {
-    ctx.clearRect(0, 0, c.width, c.height)
-    ctx.beginPath()
-    ctx.lineWidth = "2"
-    ctx.strokeStyle = "red"
-    ctx.rect(x, y, 10, 10)
-    ctx.stroke()
-    if (x + dx <= 0 || x + dx + 10 > c.width) {
-        dx = -dx
-    }
-    if (y + dy <= 0 || y + dy + 10 > c.height) {
-        dy = -dy
-    }
+    animeRectangle(0)
 
-    x += dx
-    y += dy
-
-    setTimeout(f, 0)
+    setTimeout(f, 1)
     //while(true);
     //const p = document.createElement('p')
     //p.append(Date.now()+" - click");
     // document.body.appendChild(p)
 
 }
+
+    function f2(t) {
+        animeRectangle(1)
+        setTimeout(f2)
+    }
 f()
+    f2()
 </script>
 </body>
 </html>
