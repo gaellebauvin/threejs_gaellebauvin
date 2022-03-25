@@ -4,12 +4,12 @@ import Stats from "three/examples/jsm/libs/stats.module";
 import {GUI} from "dat.gui";
 
 export class App {
-    daMercure = 1.003196807
-    daVenus = 0.302521
-    daMars = 0.025203044
-    daTerre = 0.159235669
-    daLune = 0.159235669
-    oldTime = 0
+    readonly daMercure = 1.003196807
+    readonly daVenus = 0.302521
+    readonly daMars = 0.025203044
+    readonly daTerre = 0.159235669
+    readonly daLune = 0.159235669
+    oldTime : number = 0
 
     aMercure = 0
     aVenus = 0
@@ -81,14 +81,14 @@ export class App {
             new THREE.SphereGeometry(),
             new THREE.MeshBasicMaterial({
                 wireframe: true,
-                color : 0xFFFFF
+                color : 0xFFff55
             })
         )
         const mercure = new THREE.Mesh(
             new THREE.SphereGeometry(),
             new THREE.MeshBasicMaterial({
                 wireframe: true,
-                color : 0xFFFFF
+                color : 0x887755
             })
         )
         mercure.position.x = 3.8
@@ -100,7 +100,7 @@ export class App {
             new THREE.SphereGeometry(),
             new THREE.MeshBasicMaterial({
                 wireframe: true,
-                color : 0xFFFFF
+                color : 0xffcccc
             })
         )
 
@@ -113,7 +113,7 @@ export class App {
             new THREE.SphereGeometry(),
             new THREE.MeshBasicMaterial({
                 wireframe: true,
-                color : 0xFFFFF
+                color : 0x3333FF
             })
         )
         terre.position.x = 10
@@ -162,17 +162,23 @@ export class App {
     private _processFrame(t: number) {
         requestAnimationFrame(this._processFrame.bind(this))
         const dt = t - this.oldTime
-        this.aMercure += this.daMercure
-        this.aVenus += this.daVenus
-        this.aTerre += this.daTerre
-        this.aLune += this.daLune
-        this.aMars += this.daMars
+        this.aMercure = (this.aMercure - (this.daMercure * dt * 0.001)) % (2* Math.PI)
+        this.aVenus = (this.aVenus - (this.daVenus * dt * 0.001)) % (2* Math.PI)
+        this.aTerre = (this.aTerre - (this.daTerre * dt * 0.001)) % (2* Math.PI)
+        this.aLune = (this.aLune - (this.daLune * dt * 0.001)) % (2* Math.PI)
+        this.aMars = (this.aMars - (this.daMars * dt * 0.001)) % (2* Math.PI)
         this._mercure.position.x = Math.cos(this.aMercure)* 3.8
         this._mercure.position.z = Math.sin(this.aMercure)* 3.8
         this._venus.position.x = Math.cos(this.aVenus)* 7.2
         this._venus.position.z = Math.sin(this.aVenus)* 7.2
+        this._terre.position.x = Math.cos(this.aTerre)* 10
+        this._terre.position.z = Math.sin(this.aTerre)* 10
+        this._mars.position.x = Math.cos(this.aMars)* 15.2
+        this._mars.position.z = Math.sin(this.aMars)* 15.2
         this._render()
         this._stats.update()
+
+        this.oldTime = t;
     }
 
     run() {
